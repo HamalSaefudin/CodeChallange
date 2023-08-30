@@ -6,16 +6,14 @@ import {
   routesEnum,
 } from '@src/constants/rootStackParamType';
 import {getCars} from '@src/redux/actions/cars';
+import {getOrders} from '@src/redux/actions/orders';
 import {RootState} from '@src/redux/store';
 import {CarDocument} from '@src/types/cars';
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
 import {moderateScale} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
 import ListCars from '../Cars/Components/ListCars';
-import {hideLoading, showLoading} from '@src/redux/actions/spinner';
-import firestore from '@react-native-firebase/firestore';
-import {setGetOrdersCallback} from '@src/redux/actions/orders';
 type Props = NativeStackScreenProps<RootStackParamType, routesEnum.HOME_PAGE>;
 
 const HomePages: React.FC<Props> = ({navigation}) => {
@@ -29,32 +27,10 @@ const HomePages: React.FC<Props> = ({navigation}) => {
     (state: RootState) => state.orders?.getOrdersCallback,
   );
 
-  const getOrders = useCallback(
-    (userId: string) => {
-      dispatch(showLoading());
-      firestore()
-        .collection('orders_collection')
-        .where('userId', '==', userId)
-        .get()
-        .then(querySnapshot => {
-          const documents: any[] = [];
-          querySnapshot.forEach((doc: any) => {
-            documents.push({id: doc.id, ...doc.data()});
-          });
-          dispatch(setGetOrdersCallback(documents));
-        })
-        .catch(e => console.log(e, 'er'))
-        .finally(() => {
-          dispatch(hideLoading());
-        });
-    },
-    [dispatch],
-  );
-
   useEffect(() => {
     dispatch(getCars());
-    getOrders(user?.uid);
-  }, [dispatch, getOrders, user]);
+    dispatch(getOrders());
+  }, [dispatch, user]);
   console.log(cars.length);
 
   return (

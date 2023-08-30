@@ -92,7 +92,12 @@ const CarsPages: React.FC<Props> = ({navigation, route}) => {
   );
 
   const validateButton = useCallback((data: FormCarInterface) => {
-    const isValid = Object.values(data).every(dt => dt);
+    const isRateValid =
+      Number(data.hourlyRate) < Number(data.dailyRate) &&
+      Number(data.dailyRate) < Number(data.monthlyRate) &&
+      Number(data.hourlyRate) < Number(data.monthlyRate);
+
+    const isValid = Object.values(data).every(dt => dt) && isRateValid;
     return {
       style: {
         backgroundColor: isValid
@@ -126,7 +131,9 @@ const CarsPages: React.FC<Props> = ({navigation, route}) => {
           />
         </TouchableOpacity>
         <View style={styles.headerTitleContainer}>
-          <Text style={styles.titleSection}>Add New Car </Text>
+          <Text style={[styles.titleSection, globalStyles.font.bold]}>
+            Add New Car{' '}
+          </Text>
         </View>
       </View>
       <ScrollView

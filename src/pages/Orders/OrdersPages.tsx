@@ -1,26 +1,31 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Image, Pressable, SafeAreaView, Text, View} from 'react-native';
-import styles from './OrdersPages.styles';
-import globalStyles from '@src/constants/globalStyles';
-import {FlatList} from 'react-native';
-import Spacer from '@src/components/Spacer/Spacer';
-import {moderateScale} from 'react-native-size-matters';
-import imagePath from '@src/constants/imagePath';
-import {goBack} from '@src/routes/indexRoutes';
-import IIonIcons from 'react-native-vector-icons/Ionicons';
-import {useDispatch, useSelector} from 'react-redux';
-import {hideLoading, showLoading} from '@src/redux/actions/spinner';
-import firestore from '@react-native-firebase/firestore';
-import {RootState} from '@src/redux/store';
-import {currencyFormat} from '@src/utils/utils';
 import Rating from '@src/components/Rating/Rating';
+import Spacer from '@src/components/Spacer/Spacer';
+import globalStyles from '@src/constants/globalStyles';
+import imagePath from '@src/constants/imagePath';
+import {getOrders} from '@src/redux/actions/orders';
+import {RootState} from '@src/redux/store';
+import {goBack} from '@src/routes/indexRoutes';
+import {currencyFormat} from '@src/utils/utils';
+import React, {useCallback, useEffect} from 'react';
+import {
+  FlatList,
+  Image,
+  Pressable,
+  SafeAreaView,
+  Text,
+  View,
+} from 'react-native';
+import {moderateScale} from 'react-native-size-matters';
+import IIonIcons from 'react-native-vector-icons/Ionicons';
 import IMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import styles from './OrdersPages.styles';
 
 const OrdersPages = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.loginCallback.user);
-
-  const [data, setData] = useState<any>([]);
+  const data = useSelector(
+    (state: RootState) => state.orders.getOrdersCallback,
+  );
 
   const renderSpacer = useCallback(
     () => <Spacer height={moderateScale(10)} />,
@@ -61,40 +66,9 @@ const OrdersPages = () => {
     [],
   );
 
-  const getOrders = useCallback(
-    (userId: string) => {
-      dispatch(showLoading());
-      firestore()
-        .collection('orders_collection')
-        .where('userId', '==', userId)
-        .get()
-        .then(querySnapshot => {
-          const documents: any[] = [];
-          querySnapshot.forEach((doc: any) => {
-            firestore()
-              .collection('cars_collection')
-              .where('id', '==', doc?.data()?.carId)
-              .get()
-              .then((car: any) => {
-                car.forEach((cr: any) => {
-                  console.log(cr?.data());
-                  documents.push({...doc.data(), ...cr?.data()});
-                });
-                setData(documents);
-              });
-          });
-        })
-        .catch(e => console.log(e, 'er'))
-        .finally(() => {
-          dispatch(hideLoading());
-        });
-    },
-    [dispatch],
-  );
-
   useEffect(() => {
-    getOrders(user.uid);
-  }, [getOrders, user]);
+    dispatch(getOrders());
+  }, [dispatch]);
 
   return (
     <SafeAreaView style={globalStyles.layout.rootContainer}>
@@ -115,9 +89,11 @@ const OrdersPages = () => {
               </View>
               <View style={styles.detailInfo}>
                 <View>
-                  <Text>{item.carName}</Text>
-                  <Text>Type {item.carType}</Text>
-                  <Text>
+                  <Text style={globalStyles.font.regular}>{item.carName}</Text>
+                  <Text style={globalStyles.font.regular}>
+                    Type {item.carType}
+                  </Text>
+                  <Text style={globalStyles.font.regular}>
                     {currencyFormat(Number(item.hourlyRate), 'symbol')} / Hour
                   </Text>
                 </View>

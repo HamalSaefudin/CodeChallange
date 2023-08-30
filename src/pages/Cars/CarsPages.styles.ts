@@ -7,18 +7,22 @@ export default StyleSheet.create({
     paddingLeft: moderateScale(20),
     paddingVertical: moderateScale(14),
     marginVertical: 0,
+    ...globalStyles.font.regular,
   },
   inputCurrencyStyles: {
     paddingLeft: moderateScale(10),
     paddingVertical: moderateScale(14),
     marginVertical: 0,
     letterSpacing: moderateScale(1),
+    ...globalStyles.font.regular,
   },
   placeholder: {
     color: globalStyles.colors.common.darkNavy02,
+    ...globalStyles.font.medium,
   },
   value: {
     color: globalStyles.colors.common.darkNavy,
+    ...globalStyles.font.medium,
   },
   spaceBetween: {
     justifyContent: 'space-between',
@@ -31,9 +35,9 @@ export default StyleSheet.create({
     paddingVertical: 0,
   },
   titleSection: {
-    fontWeight: '500',
     fontSize: moderateScale(16),
     marginVertical: moderateScale(10),
+    ...globalStyles.font.medium,
   },
   menuSelection: {
     borderWidth: 1,

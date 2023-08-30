@@ -13,8 +13,8 @@ export default StyleSheet.create({
   },
   title: {
     fontSize: moderateScale(22),
-    fontWeight: 'bold',
     color: globalStyles.colors.common.darkNavy,
+    ...globalStyles.font.bold,
   },
   menuItem: {
     paddingVertical: moderateScale(20),
@@ -48,9 +48,9 @@ export default StyleSheet.create({
   },
   txtConfirm: {
     color: globalStyles.colors.common.white,
-    fontWeight: 'bold',
     fontSize: moderateScale(18),
     letterSpacing: moderateScale(1),
+    ...globalStyles.font.medium,
   },
   activeButton: {
     backgroundColor: globalStyles.colors.common.green,

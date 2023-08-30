@@ -1,10 +1,14 @@
-import firestore from '@react-native-firebase/firestore';
+import firestore, {
+  FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore';
 import {CarDocument, FormCarInterface} from '@src/types/cars';
 import {call, put, takeLatest} from 'redux-saga/effects';
 import {
+  deleteCar,
   getCars,
   postCreateCar,
   setCreateCarCallback,
+  setDeleteCarCallback,
   setGetCarsCallback,
 } from '../actions/cars';
 import {goBack, navigate} from '@src/routes/indexRoutes';
@@ -51,7 +55,25 @@ export function* fetchCar(): Generator {
   }
 }
 
+export function* deleteCarProcess({payload}: {payload: string}): Generator {
+  yield put(showLoading());
+  try {
+    const collectionRef = firestore().collection('cars_collection');
+    const querySnapshot: FirebaseFirestoreTypes.QuerySnapshot | any =
+      yield call([collectionRef, collectionRef.where('id', '==', payload).get]);
+
+    querySnapshot.docs[0]?.ref?.delete();
+    yield put(getCars());
+    yield put(setDeleteCarCallback({isSuccess: true, isFailed: false}));
+  } catch (error) {
+    yield put(setDeleteCarCallback({isSuccess: false, isFailed: true}));
+  } finally {
+    yield put(hideLoading());
+  }
+}
+
 export default function* carSaga() {
   yield takeLatest(postCreateCar, fetchCreateCar);
   yield takeLatest(getCars, fetchCar);
+  yield takeLatest(deleteCar, deleteCarProcess);
 }

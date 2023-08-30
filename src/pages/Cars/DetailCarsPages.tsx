@@ -1,11 +1,18 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import Rating from '@src/components/Rating/Rating';
+import Spacer from '@src/components/Spacer/Spacer';
 import globalStyles from '@src/constants/globalStyles';
 import imagePath from '@src/constants/imagePath';
 import {
   RootStackParamType,
   routesEnum,
 } from '@src/constants/rootStackParamType';
-import React, {useCallback} from 'react';
+import {deleteCar, setDeleteCarCallback} from '@src/redux/actions/cars';
+import {createOrder, setCreateOrderCallback} from '@src/redux/actions/orders';
+import {RootState} from '@src/redux/store';
+import {CreateOrderInterface} from '@src/types/orders';
+import {currencyFormat} from '@src/utils/utils';
+import React, {useCallback, useEffect} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -16,18 +23,8 @@ import {
 } from 'react-native';
 import {moderateScale} from 'react-native-size-matters';
 import IIonIcons from 'react-native-vector-icons/Ionicons';
-import styles from './DetailCarsPages.styles';
-import {currencyFormat} from '@src/utils/utils';
-import Rating from '@src/components/Rating/Rating';
-import Spacer from '@src/components/Spacer/Spacer';
-import {RootState} from '@src/redux/store';
 import {useDispatch, useSelector} from 'react-redux';
-import firestore from '@react-native-firebase/firestore';
-import {hideLoading, showLoading} from '@src/redux/actions/spinner';
-import {getCars} from '@src/redux/actions/cars';
-import {CreateOrderInterface} from '@src/types/orders';
-import {goBack} from '@src/routes/indexRoutes';
-import {setGetOrdersCallback} from '@src/redux/actions/orders';
+import styles from './DetailCarsPages.styles';
 
 type Props = NativeStackScreenProps<
   RootStackParamType,
@@ -37,59 +34,36 @@ type Props = NativeStackScreenProps<
 const DetailCarsPages: React.FC<Props> = ({navigation, route}) => {
   const car = route.params;
   const user = useSelector((state: RootState) => state.auth.loginCallback.user);
+  const carReducer = useSelector((state: RootState) => state.car);
+  const orderReducer = useSelector((state: RootState) => state.orders);
+
   const isAdmin = user?.email?.split('@')[0].toLowerCase() === 'admin';
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (carReducer?.deleteCarCallback?.isSuccess) {
+      dispatch(setDeleteCarCallback({isFailed: false, isSuccess: false}));
+      navigation.goBack();
+    }
+  }, [carReducer, dispatch, navigation]);
+
+  useEffect(() => {
+    if (orderReducer?.createOrderCallback?.isSuccess) {
+      dispatch(setCreateOrderCallback({isFailed: false, isSuccess: false}));
+      navigation.goBack();
+    }
+  }, [orderReducer?.createOrderCallback, dispatch, navigation]);
+
   const deleteData = useCallback(
-    (id: number | string) => {
-      dispatch(showLoading());
-      firestore()
-        .collection('cars_collection')
-        .where('id', '==', id)
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.docs[0]?.ref?.delete();
-          dispatch(getCars());
-          navigation.goBack();
-        })
-        .catch(e => console.log(e, 'er'))
-        .finally(() => {
-          dispatch(hideLoading());
-        });
+    (id: string) => {
+      dispatch(deleteCar(id));
     },
-    [dispatch, navigation],
+    [dispatch],
   );
 
-  const createOrder = useCallback(
-    (id: string, payload: CreateOrderInterface) => {
-      dispatch(showLoading());
-      firestore()
-        .collection('orders_collection')
-        .doc(id)
-        .set(payload)
-        .then(() => {
-          dispatch(showLoading());
-          firestore()
-            .collection('orders_collection')
-            .where('userId', '==', payload.userId)
-            .get()
-            .then(querySnapshot => {
-              const documents: any[] = [];
-              querySnapshot.forEach((doc: any) => {
-                documents.push({id: doc.id, ...doc.data()});
-              });
-              dispatch(setGetOrdersCallback(documents));
-              goBack();
-            })
-            .catch(e => console.log(e, 'er'))
-            .finally(() => {
-              dispatch(hideLoading());
-            });
-        })
-        .catch(e => console.log(e, 'er'))
-        .finally(() => {
-          dispatch(hideLoading());
-        });
+  const handleCreateOrder = useCallback(
+    (payload: CreateOrderInterface) => {
+      dispatch(createOrder(payload));
     },
     [dispatch],
   );
@@ -118,8 +92,8 @@ const DetailCarsPages: React.FC<Props> = ({navigation, route}) => {
         <Rating rating={Number(car.rating)} />
         <View style={styles.row}>
           <View>
-            <Text
-              style={styles.title}>{`${car.carName} - ${car.carType}`}</Text>
+            <Text style={styles.title}>{`${car.carName}`}</Text>
+            <Text style={styles.txtType}>{`Type: ${car.carType}`}</Text>
             <Text style={styles.subTitle}>
               Price: {currencyFormat(Number(car.hourlyRate), 'symbol')} / Hour
             </Text>
@@ -159,8 +133,9 @@ const DetailCarsPages: React.FC<Props> = ({navigation, route}) => {
                   const payload = {
                     userId: user?.uid,
                     carId: car.id,
+                    id: `${Number(car.totalOrders) + 1}`,
                   };
-                  createOrder(`${Number(car.totalOrders) + 1}`, payload);
+                  handleCreateOrder(payload);
                 }}>
                 <Text style={styles.txtConfirm}>Order</Text>
               </TouchableOpacity>
@@ -172,8 +147,9 @@ const DetailCarsPages: React.FC<Props> = ({navigation, route}) => {
                 const payload = {
                   userId: user?.uid,
                   carId: car.id,
+                  id: `${Number(car.totalOrders) + 1}`,
                 };
-                createOrder(`${Number(car.totalOrders) + 1}`, payload);
+                handleCreateOrder(payload);
               }}>
               <Text style={styles.txtConfirm}>Order</Text>
             </TouchableOpacity>

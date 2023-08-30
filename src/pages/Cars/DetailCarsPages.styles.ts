@@ -31,19 +31,26 @@ export default StyleSheet.create({
     flexGrow: 1,
   },
   title: {
-    fontWeight: 'bold',
     fontSize: moderateScale(22),
     color: globalStyles.colors.common.darkNavy,
+    ...globalStyles.font.bold,
+  },
+  txtType: {
+    fontSize: moderateScale(16),
+    color: globalStyles.colors.common.darkNavy,
+    opacity: 0.7,
+    ...globalStyles.font.bold,
   },
   priceText: {
-    fontWeight: '400',
     fontSize: moderateScale(12),
     color: globalStyles.colors.common.darkNavy05,
+    ...globalStyles.font.medium,
   },
   subTitle: {
-    fontWeight: '500',
     fontSize: moderateScale(10),
     color: globalStyles.colors.common.darkNavy05,
+    marginTop: moderateScale(5),
+    ...globalStyles.font.medium,
   },
   row: {
     flexDirection: 'row',
@@ -86,13 +93,16 @@ export default StyleSheet.create({
   txtEdit: {
     color: globalStyles.colors.common.darkNavy05,
     fontWeight: 'bold',
+    ...globalStyles.font.bold,
   },
   txtDelete: {
     color: globalStyles.colors.status.error,
     fontWeight: 'bold',
+    ...globalStyles.font.bold,
   },
   txtConfirm: {
     color: globalStyles.colors.common.white,
     fontWeight: 'bold',
+    ...globalStyles.font.bold,
   },
 });

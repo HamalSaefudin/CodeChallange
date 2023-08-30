@@ -55,6 +55,7 @@ const ListCars: React.FC<Props> = ({data, totalOrders = 0}) => {
                 style={{
                   fontSize: moderateScale(8),
                   color: globalStyles.colors.common.white,
+                  ...globalStyles.font.regular,
                 }}>
                 {totalOrders}
               </Text>
@@ -102,9 +103,9 @@ const ListCars: React.FC<Props> = ({data, totalOrders = 0}) => {
           </View>
           <View style={styles.detailInfo}>
             <View>
-              <Text>{item.carName}</Text>
-              <Text>Type {item.carType}</Text>
-              <Text>
+              <Text style={globalStyles.font.regular}>{item.carName}</Text>
+              <Text style={globalStyles.font.regular}>Type {item.carType}</Text>
+              <Text style={globalStyles.font.regular}>
                 {currencyFormat(Number(item.hourlyRate), 'symbol')} / Hour
               </Text>
             </View>
@@ -151,8 +152,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: globalStyles.colors.common.darkNavy,
-    fontWeight: 'bold',
     fontSize: moderateScale(22),
+    fontFamily: 'Roboto-Bold',
   },
   shoppingCart: {
     position: 'absolute',
@@ -177,9 +178,9 @@ const styles = StyleSheet.create({
     marginTop: globalStyles.layout.screen.height / 4,
   },
   txtNoItem: {
-    fontWeight: 'bold',
     color: globalStyles.colors.common.darkNavy05,
     marginTop: moderateScale(10),
+    ...globalStyles.font.bold,
   },
 });
 

@@ -13,24 +13,8 @@ export default StyleSheet.create({
   },
   title: {
     color: globalStyles.colors.common.darkNavy,
-    fontWeight: 'bold',
     fontSize: moderateScale(22),
-  },
-  shoppingCart: {
-    position: 'absolute',
-    right: '5%',
-    padding: moderateScale(20),
-  },
-  shoppingCartIndicator: {
-    height: moderateScale(15),
-    width: moderateScale(15),
-    backgroundColor: globalStyles.colors.status.error,
-    position: 'absolute',
-    borderRadius: moderateScale(10),
-    justifyContent: 'center',
-    alignItems: 'center',
-    bottom: 18,
-    left: 22,
+    ...globalStyles.font.bold,
   },
   itemContainer: {
     paddingVertical: moderateScale(10),

@@ -45,6 +45,17 @@ const globalStyles = {
       width: Dimensions.get('screen').width,
     },
   },
+  font: {
+    regular: {
+      fontFamily: 'Roboto-Regular',
+    },
+    bold: {
+      fontFamily: 'Roboto-Bold',
+    },
+    medium: {
+      fontFamily: 'Roboto-Medium',
+    },
+  },
 };
 
 export default globalStyles;

@@ -1,6 +1,9 @@
+import {BaseCallbackInterface} from './base';
+
 export interface BaseCarState {
   createCarCallback: CreateCarCallbackInterface;
   cars: CarDocument[] | string;
+  deleteCarCallback?: BaseCallbackInterface;
 }
 export interface FormCarInterface {
   carType: string;
