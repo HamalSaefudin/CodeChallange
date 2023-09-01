@@ -1,4 +1,5 @@
 import {CarDocument} from '@src/types/cars';
+import {CreateOrderInterface} from '@src/types/orders';
 
 export enum routesEnum {
   LOGIN_PAGE = 'Login_Page',
@@ -7,6 +8,7 @@ export enum routesEnum {
   DETAIL_CARS_PAGE = 'Detail_Cars_Page',
   SELECTION_OPTIONS_PAGE = 'Select_Options_Page',
   ORDERS_PAGE = 'Orders_Page',
+  CREATE_ORDER_PAGE = 'CREATE_ORDER_PAGE',
 }
 
 export type RootStackParamType = {
@@ -23,4 +25,7 @@ export type RootStackParamType = {
   };
   [routesEnum.DETAIL_CARS_PAGE]: CarDocument;
   [routesEnum.ORDERS_PAGE]: undefined;
+  [routesEnum.CREATE_ORDER_PAGE]: {
+    idOrder: CreateOrderInterface;
+  };
 };

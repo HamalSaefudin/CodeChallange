@@ -5,6 +5,7 @@ import {
 } from '@src/constants/rootStackParamType';
 import CarsPages from '@src/pages/Cars/CarsPages';
 import DetailCarsPages from '@src/pages/Cars/DetailCarsPages';
+import CreateOrderPages from '@src/pages/CreateOrder/CreateOrderPages';
 import HomePages from '@src/pages/Home/HomePages';
 import LoginPages from '@src/pages/Login/LoginPages';
 import OrdersPages from '@src/pages/Orders/OrdersPages';
@@ -26,6 +27,10 @@ const AppRoutes = () => {
         component={DetailCarsPages}
       />
       <Stack.Screen name={routesEnum.ORDERS_PAGE} component={OrdersPages} />
+      <Stack.Screen
+        name={routesEnum.CREATE_ORDER_PAGE}
+        component={CreateOrderPages}
+      />
       <Stack.Group screenOptions={{presentation: 'modal'}}>
         <Stack.Screen
           name={routesEnum.SELECTION_OPTIONS_PAGE}

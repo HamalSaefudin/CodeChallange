@@ -58,20 +58,4 @@ export default StyleSheet.create({
     color: globalStyles.colors.common.gray,
     letterSpacing: 1,
   },
-  header: {
-    height: '7%',
-    paddingLeft: moderateScale(10),
-    flexDirection: 'row',
-    zIndex: 100,
-  },
-  headerTitleContainer: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  btnBack: {
-    position: 'absolute',
-    left: moderateScale(10),
-    zIndex: 99,
-  },
 });

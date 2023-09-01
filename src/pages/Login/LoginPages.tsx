@@ -102,6 +102,7 @@ const LoginPages: React.FC<Props> = ({navigation}) => {
                   />
                 </Pressable>
               }
+              style={Styles.inputStyles}
               secureTextEntry={!showPassword}
               errorText={errorPassword}
               isError={Boolean(errorPassword)}

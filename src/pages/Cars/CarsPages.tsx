@@ -1,6 +1,8 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import AppInput from '@src/components/AppInput/AppInput';
+import BaseHeader from '@src/components/BaseHeader/BaseHeader';
 import CurrencyInput from '@src/components/CurrencyInput/CurrencyInput';
+import Spacer from '@src/components/Spacer/Spacer';
 import formOptions from '@src/constants/formOptions';
 import globalStyles from '@src/constants/globalStyles';
 import {
@@ -21,10 +23,8 @@ import {
   View,
 } from 'react-native';
 import {moderateScale} from 'react-native-size-matters';
-import IIonIcons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import styles from './CarsPages.styles';
-import Spacer from '@src/components/Spacer/Spacer';
 
 type Props = NativeStackScreenProps<RootStackParamType, routesEnum.CARS_PAGE>;
 
@@ -118,24 +118,7 @@ const CarsPages: React.FC<Props> = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={globalStyles.layout.rootContainer}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.btnBack}
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <IIonIcons
-            name="arrow-back-circle-outline"
-            size={moderateScale(36)}
-            color={globalStyles.colors.common.darkNavy05}
-          />
-        </TouchableOpacity>
-        <View style={styles.headerTitleContainer}>
-          <Text style={[styles.titleSection, globalStyles.font.bold]}>
-            Add New Car{' '}
-          </Text>
-        </View>
-      </View>
+      <BaseHeader title="Add New Car" />
       <ScrollView
         contentContainerStyle={[
           globalStyles.layout.scrollViewContainer,

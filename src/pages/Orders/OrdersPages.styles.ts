@@ -31,7 +31,7 @@ export default StyleSheet.create({
   imageWrapper: {
     height: moderateScale(100),
     width: moderateScale(100),
-    marginRight: moderateScale(20),
+    marginRight: moderateScale(10),
   },
   image: {
     width: '100%',
@@ -39,7 +39,7 @@ export default StyleSheet.create({
     borderRadius: moderateScale(10),
   },
   detailInfo: {
-    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   goBack: {
     position: 'absolute',
@@ -56,5 +56,11 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: globalStyles.colors.common.darkNavy05,
     marginTop: moderateScale(10),
+  },
+  alignItemsCenter: {
+    alignItems: 'center',
+  },
+  alignSelfCenter: {
+    alignSelf: 'center',
   },
 });

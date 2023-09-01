@@ -1,10 +1,10 @@
-import Rating from '@src/components/Rating/Rating';
 import Spacer from '@src/components/Spacer/Spacer';
 import globalStyles from '@src/constants/globalStyles';
 import imagePath from '@src/constants/imagePath';
 import {getOrders} from '@src/redux/actions/orders';
 import {RootState} from '@src/redux/store';
 import {goBack} from '@src/routes/indexRoutes';
+import {GetOrdersCallbackInterface} from '@src/types/orders';
 import {currencyFormat} from '@src/utils/utils';
 import React, {useCallback, useEffect} from 'react';
 import {
@@ -23,7 +23,7 @@ import styles from './OrdersPages.styles';
 
 const OrdersPages = () => {
   const dispatch = useDispatch();
-  const data = useSelector(
+  const data: GetOrdersCallbackInterface[] = useSelector(
     (state: RootState) => state.orders.getOrdersCallback,
   );
 
@@ -88,16 +88,54 @@ const OrdersPages = () => {
                 />
               </View>
               <View style={styles.detailInfo}>
-                <View>
-                  <Text style={globalStyles.font.regular}>{item.carName}</Text>
-                  <Text style={globalStyles.font.regular}>
+                <View
+                  style={[
+                    styles.alignSelfCenter,
+                    {marginRight: moderateScale(30)},
+                  ]}>
+                  <Text
+                    style={[
+                      globalStyles.font.bold,
+                      {fontSize: moderateScale(18)},
+                    ]}>
+                    {item.carName}
+                  </Text>
+                  <Text
+                    style={[
+                      globalStyles.font.regular,
+                      {fontSize: moderateScale(12)},
+                    ]}>
                     Type {item.carType}
                   </Text>
-                  <Text style={globalStyles.font.regular}>
-                    {currencyFormat(Number(item.hourlyRate), 'symbol')} / Hour
-                  </Text>
+                  <Spacer height={moderateScale(40)} />
+                  <View style={{marginTop: moderateScale(10)}}>
+                    <Text style={globalStyles.font.regular}>
+                      {`${item.pickupDate}`}
+                    </Text>
+                  </View>
                 </View>
-                <Rating rating={Number(item.rating)} />
+                <View style={styles.alignItemsCenter}>
+                  <View style={styles.alignItemsCenter}>
+                    <Text style={globalStyles.font.regular}>Pick Up</Text>
+                    <Text style={globalStyles.font.regular}>
+                      {item.pickupLocation.split(',')[0]}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      height: moderateScale(40),
+                      width: moderateScale(3),
+                      backgroundColor: globalStyles.colors.common.green,
+                      borderRadius: moderateScale(40),
+                    }}
+                  />
+                  <View style={styles.alignItemsCenter}>
+                    <Text style={globalStyles.font.regular}>Drop Off</Text>
+                    <Text style={globalStyles.font.regular}>
+                      {item.dropoffLocation.split(',')[0]}
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
           </View>

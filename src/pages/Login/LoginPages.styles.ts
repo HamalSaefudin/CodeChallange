@@ -10,6 +10,7 @@ const Styles = StyleSheet.create({
     fontSize: moderateScale(24),
     textAlign: 'center',
     marginBottom: moderateScale(25),
+    ...globalStyles.font.regular,
   },
   formContainer: {
     flex: 1,

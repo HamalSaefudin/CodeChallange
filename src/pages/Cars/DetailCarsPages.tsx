@@ -8,9 +8,8 @@ import {
   routesEnum,
 } from '@src/constants/rootStackParamType';
 import {deleteCar, setDeleteCarCallback} from '@src/redux/actions/cars';
-import {createOrder, setCreateOrderCallback} from '@src/redux/actions/orders';
+import {setCreateOrderCallback} from '@src/redux/actions/orders';
 import {RootState} from '@src/redux/store';
-import {CreateOrderInterface} from '@src/types/orders';
 import {currencyFormat} from '@src/utils/utils';
 import React, {useCallback, useEffect} from 'react';
 import {
@@ -61,12 +60,6 @@ const DetailCarsPages: React.FC<Props> = ({navigation, route}) => {
     [dispatch],
   );
 
-  const handleCreateOrder = useCallback(
-    (payload: CreateOrderInterface) => {
-      dispatch(createOrder(payload));
-    },
-    [dispatch],
-  );
   return (
     <SafeAreaView style={[globalStyles.layout.rootContainer]}>
       <View style={styles.imageWrapper}>
@@ -135,7 +128,9 @@ const DetailCarsPages: React.FC<Props> = ({navigation, route}) => {
                     carId: car.id,
                     id: `${Number(car.totalOrders) + 1}`,
                   };
-                  handleCreateOrder(payload);
+                  navigation.navigate(routesEnum.CREATE_ORDER_PAGE, {
+                    idOrder: payload,
+                  });
                 }}>
                 <Text style={styles.txtConfirm}>Order</Text>
               </TouchableOpacity>
@@ -149,7 +144,9 @@ const DetailCarsPages: React.FC<Props> = ({navigation, route}) => {
                   carId: car.id,
                   id: `${Number(car.totalOrders) + 1}`,
                 };
-                handleCreateOrder(payload);
+                navigation.navigate(routesEnum.CREATE_ORDER_PAGE, {
+                  idOrder: payload,
+                });
               }}>
               <Text style={styles.txtConfirm}>Order</Text>
             </TouchableOpacity>
