@@ -31,7 +31,6 @@ const HomePages: React.FC<Props> = ({navigation}) => {
     dispatch(getCars());
     dispatch(getOrders());
   }, [dispatch, user]);
-  console.log(cars.length);
 
   return (
     <SafeAreaView style={globalStyles.layout.rootContainer}>

@@ -1,9 +1,11 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Rating from '@src/components/Rating/Rating';
 import Spacer from '@src/components/Spacer/Spacer';
 import globalStyles from '@src/constants/globalStyles';
 import imagePath from '@src/constants/imagePath';
 import {routesEnum} from '@src/constants/rootStackParamType';
-import {navigate} from '@src/routes/indexRoutes';
+import {setLoginCallback} from '@src/redux/actions/auth';
+import {navigate, resetNavigationRef} from '@src/routes/indexRoutes';
 import {CarDocument} from '@src/types/cars';
 import {generateShadow} from '@src/utils/generateShadow';
 import {currencyFormat} from '@src/utils/utils';
@@ -21,6 +23,7 @@ import Animated, {SlideInDown} from 'react-native-reanimated';
 import {moderateScale} from 'react-native-size-matters';
 import IFontAwsome6 from 'react-native-vector-icons/FontAwesome6';
 import IMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch} from 'react-redux';
 interface Props {
   data?: CarDocument[];
   totalOrders?: number;
@@ -30,6 +33,7 @@ const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
 
 const ListCars: React.FC<Props> = ({data, totalOrders = 0}) => {
+  const dispatch = useDispatch();
   const renderSpacer = useCallback(
     () => <Spacer height={moderateScale(10)} />,
     [],
@@ -62,9 +66,22 @@ const ListCars: React.FC<Props> = ({data, totalOrders = 0}) => {
             </View>
           )}
         </Pressable>
+        <Pressable
+          style={styles.logout}
+          onPress={async () => {
+            await AsyncStorage.clear();
+            dispatch(setLoginCallback(''));
+            resetNavigationRef(routesEnum.LOGIN_PAGE);
+          }}>
+          <IFontAwsome6
+            name="power-off"
+            size={moderateScale(20)}
+            color={globalStyles.colors.status.error}
+          />
+        </Pressable>
       </View>
     ),
-    [totalOrders],
+    [dispatch, totalOrders],
   );
 
   const renderNoItem = useCallback(
@@ -157,7 +174,7 @@ const styles = StyleSheet.create({
   },
   shoppingCart: {
     position: 'absolute',
-    right: '5%',
+    left: 0,
     padding: moderateScale(20),
   },
   shoppingCartIndicator: {
@@ -181,6 +198,11 @@ const styles = StyleSheet.create({
     color: globalStyles.colors.common.darkNavy05,
     marginTop: moderateScale(10),
     ...globalStyles.font.bold,
+  },
+  logout: {
+    position: 'absolute',
+    right: 0,
+    padding: moderateScale(20),
   },
 });
 

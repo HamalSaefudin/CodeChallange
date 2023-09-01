@@ -10,14 +10,20 @@ import HomePages from '@src/pages/Home/HomePages';
 import LoginPages from '@src/pages/Login/LoginPages';
 import OrdersPages from '@src/pages/Orders/OrdersPages';
 import SelectOptionsPages from '@src/pages/SelectOptions/SelectOptionsPages';
+import {RootState} from '@src/redux/store';
 import React from 'react';
+import {useSelector} from 'react-redux';
 
 const Stack = createNativeStackNavigator<RootStackParamType>();
 
 const AppRoutes = () => {
+  const login = useSelector((state: RootState) => state.auth.loginCallback);
+
   return (
     <Stack.Navigator
-      initialRouteName={routesEnum.LOGIN_PAGE}
+      initialRouteName={
+        typeof login === 'object' ? routesEnum.HOME_PAGE : routesEnum.LOGIN_PAGE
+      }
       screenOptions={{headerShown: false}}>
       <Stack.Screen name={routesEnum.LOGIN_PAGE} component={LoginPages} />
       <Stack.Screen name={routesEnum.HOME_PAGE} component={HomePages} />
