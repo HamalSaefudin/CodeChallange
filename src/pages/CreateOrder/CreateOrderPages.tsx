@@ -62,7 +62,7 @@ const CreateOrderPages: React.FC<Props> = ({route}) => {
 
   const handleSelectDate = (date: Date) => {
     const format =
-      showDatePicker.formId === 'pickupTime' ? 'HH:mm' : 'DD-MM-YYYY';
+      showDatePicker.formId === 'pickupTime' ? 'HH:mm' : 'YYYY-MM-DD';
 
     setForm(fm => ({
       ...fm,
@@ -151,7 +151,7 @@ const CreateOrderPages: React.FC<Props> = ({route}) => {
             }}>
             {form.pickupDate ? (
               <Text numberOfLines={1} style={styles.value}>
-                {form.pickupDate}
+                {moment(form.pickupDate).format('DD-MM-YYYY')}
               </Text>
             ) : (
               <Text style={styles.placeholder}>{'-- Pick Up Date --'}</Text>
@@ -185,7 +185,7 @@ const CreateOrderPages: React.FC<Props> = ({route}) => {
             }}>
             {form.dropOffDate ? (
               <Text numberOfLines={1} style={styles.value}>
-                {form.dropOffDate}
+                {moment(form.dropOffDate).format('DD-MM-YYYY')}
               </Text>
             ) : (
               <Text style={styles.placeholder}>{'-- Drop Off Date --'}</Text>
@@ -201,7 +201,7 @@ const CreateOrderPages: React.FC<Props> = ({route}) => {
               ...idOrder,
             });
           }}>
-          <Text style={styles.txtConfirm}>Confirm</Text>
+          <Text style={styles.txtConfirm}>{form?.pickupDate}</Text>
         </TouchableOpacity>
 
         <DatePicker
@@ -209,7 +209,11 @@ const CreateOrderPages: React.FC<Props> = ({route}) => {
           locale="id"
           open={showDatePicker.visible}
           date={new Date()}
-          minimumDate={new Date()}
+          minimumDate={
+            showDatePicker.formId === 'dropOffDate'
+              ? moment(form.pickupDate).toDate()
+              : new Date()
+          }
           mode={showDatePicker.formId === 'pickupTime' ? 'time' : 'date'}
           onConfirm={handleSelectDate}
           onCancel={() => {
