@@ -114,7 +114,11 @@ const ListCars: React.FC<Props> = ({data, totalOrders = 0}) => {
           style={styles.itemContainer}>
           <View style={styles.imageWrapper}>
             <Image
-              source={imagePath.DEFAULT_CAR_ILLUSTRATION}
+              source={
+                item.uriIcon
+                  ? {uri: item.uriIcon}
+                  : imagePath.DEFAULT_CAR_ILLUSTRATION
+              }
               style={styles.image}
             />
           </View>

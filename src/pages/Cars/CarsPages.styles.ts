@@ -58,4 +58,14 @@ export default StyleSheet.create({
     color: globalStyles.colors.common.gray,
     letterSpacing: 1,
   },
+  imageWrapper: {
+    height: moderateScale(100),
+    width: moderateScale(100),
+    marginRight: moderateScale(20),
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: moderateScale(10),
+  },
 });

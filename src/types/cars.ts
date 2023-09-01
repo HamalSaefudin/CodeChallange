@@ -15,6 +15,7 @@ export interface FormCarInterface {
   id?: string;
   carName: string;
   isEdit?: boolean;
+  uriIcon: string;
 }
 
 export interface CreateCarCallbackInterface {
@@ -32,4 +33,5 @@ export interface CarDocument {
   monthlyRate: string;
   rating: string;
   totalOrders?: number;
+  uriIcon: string;
 }

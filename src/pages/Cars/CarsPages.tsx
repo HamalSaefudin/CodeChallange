@@ -15,6 +15,7 @@ import {FormCarInterface} from '@src/types/cars';
 import {SelectItemInterface} from '@src/types/select';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  Image,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -25,6 +26,8 @@ import {
 import {moderateScale} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
 import styles from './CarsPages.styles';
+import {launchImageLibrary} from 'react-native-image-picker';
+import imagePath from '@src/constants/imagePath';
 
 type Props = NativeStackScreenProps<RootStackParamType, routesEnum.CARS_PAGE>;
 
@@ -45,6 +48,7 @@ const CarsPages: React.FC<Props> = ({navigation, route}) => {
     hourlyRate: '',
     dailyRate: '',
     monthlyRate: '',
+    uriIcon: '',
   });
   const [isError, setIsError] = useState(false);
 
@@ -57,6 +61,7 @@ const CarsPages: React.FC<Props> = ({navigation, route}) => {
       hourlyRate: formCars?.hourlyRate || '',
       dailyRate: formCars?.dailyRate || '',
       monthlyRate: formCars?.monthlyRate || '',
+      uriIcon: formCars?.uriIcon || '',
     });
   }, [formCars]);
 
@@ -232,6 +237,37 @@ const CarsPages: React.FC<Props> = ({navigation, route}) => {
             style={styles.inputStyles}
             placeholderTextColor={globalStyles.colors.common.darkNavy02}
           />
+          <Text style={styles.titleSection}>Upload Image</Text>
+          <Pressable
+            style={styles.menuSelection}
+            onPress={async () => {
+              /**
+               * TODO:
+               * CHECK IMPLEMENTATION ON IOS
+               */
+              launchImageLibrary({
+                mediaType: 'photo',
+                includeBase64: true,
+              }).then(res => {
+                const {assets = []} = res || {};
+                setForm(fm => ({...fm, uriIcon: assets[0]?.uri || ''}));
+              });
+            }}>
+            {form.uriIcon ? (
+              <View style={styles.imageWrapper}>
+                <Image
+                  source={
+                    form.uriIcon
+                      ? {uri: form.uriIcon}
+                      : imagePath.DEFAULT_CAR_ILLUSTRATION
+                  }
+                  style={styles.image}
+                />
+              </View>
+            ) : (
+              <Text style={styles.placeholder}>{'-- Upload Image --'}</Text>
+            )}
+          </Pressable>
         </View>
         <Spacer height={moderateScale(50)} />
         <TouchableOpacity
