@@ -72,6 +72,7 @@ export default StyleSheet.create({
     backgroundColor: globalStyles.colors.common.green,
     borderRadius: moderateScale(15),
   },
+  pv0: {paddingVertical: 0},
   btnEdit: {
     paddingVertical: moderateScale(10),
     flex: 1,
@@ -92,17 +93,14 @@ export default StyleSheet.create({
   },
   txtEdit: {
     color: globalStyles.colors.common.darkNavy05,
-    fontWeight: 'bold',
     ...globalStyles.font.bold,
   },
   txtDelete: {
     color: globalStyles.colors.status.error,
-    fontWeight: 'bold',
     ...globalStyles.font.bold,
   },
   txtConfirm: {
     color: globalStyles.colors.common.white,
-    fontWeight: 'bold',
     ...globalStyles.font.bold,
   },
 });

@@ -81,6 +81,18 @@ const CreateOrderPages: React.FC<Props> = ({route}) => {
     [dispatch],
   );
 
+  const validateButton = useCallback((data: FormOrderInterface) => {
+    const isValid = Object.values(data).every(dt => dt);
+    return {
+      style: {
+        backgroundColor: isValid
+          ? globalStyles.colors.common.green
+          : globalStyles.colors.common.darkNavy02,
+      },
+      isValid,
+    };
+  }, []);
+
   return (
     <SafeAreaView style={globalStyles.layout.rootContainer}>
       <BaseHeader title="Add Order" />
@@ -181,7 +193,8 @@ const CreateOrderPages: React.FC<Props> = ({route}) => {
           </Pressable>
         </View>
         <TouchableOpacity
-          style={[styles.btnConfirm]}
+          disabled={!validateButton(form).isValid}
+          style={[styles.btnConfirm, validateButton(form).style]}
           onPress={() => {
             handleCreateOrder({
               ...form,

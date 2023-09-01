@@ -137,7 +137,7 @@ const DetailCarsPages: React.FC<Props> = ({navigation, route}) => {
             </View>
           ) : (
             <TouchableOpacity
-              style={styles.btnConfirm}
+              style={[styles.btnConfirm, styles.pv0]}
               onPress={() => {
                 const payload = {
                   userId: user?.uid,

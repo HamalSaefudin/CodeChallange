@@ -5,7 +5,6 @@ import {getOrders} from '@src/redux/actions/orders';
 import {RootState} from '@src/redux/store';
 import {goBack} from '@src/routes/indexRoutes';
 import {GetOrdersCallbackInterface} from '@src/types/orders';
-import {currencyFormat} from '@src/utils/utils';
 import React, {useCallback, useEffect} from 'react';
 import {
   FlatList,
