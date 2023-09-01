@@ -255,7 +255,6 @@ const CreateOrderPages: React.FC<Props> = ({route}) => {
                     }));
                   }}
                   query={{
-                    key: 'AIzaSyA-ul_47mNLwSkZwhFAKGEsdfcCmSi_c-U',
                     language: 'id',
                   }}
                 />
